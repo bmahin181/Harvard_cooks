@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit Recipe
+{% endblock %}
+
+{% block main %}
+<div class="container mx-auto px-4 py-6">
+    <h1 class="page-title">Edit Recipe</h1>
+
+    <!-- Form to edit a recipe -->
+    <form action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" method="POST" class="recipe-form">
+        <div class="form-group">
+            <label for="name" class="label">Recipe Name:</label>
+            <input type="text" 
+                   name="name" 
+                   id="name" 
+                   value="{{ recipe.recipe_name }}" 
+                   required
+                   class="input-field">
+        </div>
+
+        <div class="form-section">
+            <h3 class="section-title">Ingredients</h3>
+            <div id="ingredients" class="ingredient-container">
+                {% for ingredient, quantity in ingredients|zip(quantities) %}
+                <div class="ingredient-item">
+                    <input type="text" 
+                           name="ingredient[]" 
+                           value="{{ ingredient }}" 
+                           placeholder="Ingredient" 
+                           required
+                           class="input-field">
+                    <input type="text" 
+                           name="quantity[]" 
+                           value="{{ quantity }}" 
+                           placeholder="Quantity" 
+                           required
+                           class="quantity-field input-field">
+                    <button type="button" 
+                            onclick="removeRow(this)" 
+                            class="remove-btn">
+                        Remove
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" 
+                    onclick="addIngredient()" 
+                    class="px-2 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600">
+                Add Another Ingredient
+            </button>
+        </div>
+
+        <div class="form-section">
+            <h3 class="section-title">Steps</h3>
+            <div id="steps" class="steps-container">
+                {% for step in steps %}
+                <div class="step-item">
+                    <span class="step-number"></span>
+                    <input type="text" 
+                           name="step[]" 
+                           value="{{ step }}" 
+                           placeholder="Step" 
+                           required
+                           class="input-field">
+                    <button type="button" 
+                            onclick="removeRow(this)" 
+                            class="remove-btn">
+                        Remove
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" 
+                    onclick="addStep()" 
+                    class="px-2 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600">
+                Add Another Step
+            </button>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="submit-btn">
+                Save Changes
+            </button>
+            <a href="{{ url_for('recipes_form') }}" class="back-link text-black no-underline hover:text-black hover:no-underline">
+                Back to My Recipes
+            </a>
+        </div>        
+    </form>
+</div>
+
+<script>
+    // Initialize step numbers on page load
+    document.addEventListener('DOMContentLoaded', updateStepNumbers);
+
+    // Add a new ingredient field
+    function addIngredient() {
+        const ingredientsDiv = document.getElementById('ingredients');
+        const newIngredientDiv = document.createElement('div');
+        newIngredientDiv.className = 'ingredient-item';
+        newIngredientDiv.innerHTML = `
+            <input type="text" 
+                   name="ingredient[]" 
+                   placeholder="Ingredient" 
+                   required
+                   class="input-field">
+            <input type="text" 
+                   name="quantity[]" 
+                   placeholder="Quantity" 
+                   required
+                   class="quantity-field input-field">
+            <button type="button" 
+                    onclick="removeRow(this)" 
+                    class="remove-btn">
+                Remove
+            </button>
+        `;
+        ingredientsDiv.appendChild(newIngredientDiv);
+    }
+
+    // Add a new step field
+    function addStep() {
+        const stepsDiv = document.getElementById('steps');
+        const newStepDiv = document.createElement('div');
+        newStepDiv.className = 'step-item';
+        newStepDiv.innerHTML = `
+            <span class="step-number"></span>
+            <input type="text" 
+                   name="step[]" 
+                   placeholder="Step" 
+                   required
+                   class="input-field">
+            <button type="button" 
+                    onclick="removeRow(this)" 
+                    class="remove-btn">
+                Remove
+            </button>
+        `;
+        stepsDiv.appendChild(newStepDiv);
+        updateStepNumbers();
+    }
+
+    // Remove a row (ingredient or step)
+    function removeRow(button) {
+        const row = button.parentElement;
+        row.remove();
+        updateStepNumbers();
+    }
+
+    // Update step numbers
+    function updateStepNumbers() {
+        const steps = document.querySelectorAll('.step-item');
+        steps.forEach((step, index) => {
+            const numberSpan = step.querySelector('.step-number');
+            numberSpan.textContent = `${index + 1}.`;
+        });
+    }
+
+    // Add at least one ingredient/step if none exist
+    if (document.querySelectorAll('.ingredient-item').length === 0) {
+        addIngredient();
+    }
+    if (document.querySelectorAll('.step-item').length === 0) {
+        addStep();
+    }
+</script>
+{% endblock %}

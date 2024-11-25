@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Recipes
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <h1 class="page-title">My Recipes</h1>
+
+    <!-- Section for displaying the user's recipes -->
+    <div class="recipe-list">
+        <h2>Your Recipes</h2>
+        {% if recipes %}
+            <div class="space-y-4">
+                {% for recipe in recipes %}
+                <div class="card">
+                    <div class="flex gap-2 justify-between items-start">
+                        <h3>{{ recipe.recipe_name }}</h3>
+                        <div class="flex gap-2">
+                            <!-- Edit Button -->
+                            <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="px-4 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600">
+                                Edit Recipe
+                            </a>
+                            <!-- Delete Button -->
+                            <form action="{{ url_for('delete_recipe') }}" method="POST">
+                                <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                                <button type="submit" class="px-4 py-2 bg-red-500 text-black rounded-md hover:bg-red-600">
+                                    Delete Recipe
+                                </button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <h4>Ingredients:</h4>
+                            <p class="text-gray-700">{{ recipe.ingredients }}</p>
+                        </div>
+                        
+                        <div>
+                            <h4>Instructions:</h4>
+                            <ol class="list-decimal space-y-1">
+                                {% for step in recipe.instructions.split('|') %}
+                                    <li class="text-gray-700">{{ step.strip() }}</li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-600">You have no recipes yet. Add one below!</p>
+        {% endif %}
+    </div>
+
+    <!-- Section for adding a new recipe -->
+    <div class="recipe-form">
+        <h2>Add a New Recipe</h2>
+        <form action="/recipes" method="POST" class="space-y-6">
+            <div>
+                <label for="name" class="label">Recipe Name:</label>
+                <input type="text" name="name" id="name" required class="input-field">
+            </div>
+
+            <div>
+                <h3>Ingredients</h3>
+                <div id="ingredients" class="space-y-3">
+                    <div class="flex gap-4">
+                        <input type="text" name="ingredient[]" placeholder="Ingredient" required class="input-field">
+                        <input type="text" name="quantity[]" placeholder="Quantity" required class="input-field w-32">
+                    </div>
+                </div>
+                <button type="button" onclick="addIngredient()" class="px-4 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600">
+                    Add Another Ingredient
+                </button>
+            </div>
+
+            <div>
+                <h3>Steps</h3>
+                <div id="steps" class="space-y-3">
+                    <div>
+                        <input type="text" name="step[]" placeholder="Step" required class="input-field">
+                    </div>
+                </div>
+                <button type="button" onclick="addStep()" class="px-4 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600">
+                    Add Another Step
+                </button>
+            </div>
+
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600">
+                Add Recipe
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function addIngredient() {
+            const ingredientsDiv = document.getElementById('ingredients');
+            const newIngredient = document.createElement('div');
+            newIngredient.className = 'flex gap-4';
+            newIngredient.innerHTML = `
+                <input type="text" name="ingredient[]" placeholder="Ingredient" required class="input-field">
+                <input type="text" name="quantity[]" placeholder="Quantity" required class="input-field w-32">
+            `;
+            ingredientsDiv.appendChild(newIngredient);
+        }
+    
+        function addStep() {
+            const stepsDiv = document.getElementById('steps');
+            const newStep = document.createElement('div');
+            newStep.innerHTML = `
+                <input type="text" name="step[]" placeholder="Step" required class="input-field">
+            `;
+            stepsDiv.appendChild(newStep);
+        }
+    
+        function confirmDelete(button) {
+            const confirmAction = confirm("Are you sure you want to delete this recipe?");
+            if (confirmAction) {
+                button.closest("form").submit();
+            }
+        }
+    </script>
+</div>
+{% endblock %}

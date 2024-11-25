@@ -1,0 +1,127 @@
+/* Page Title */
+.page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Form Styling */
+.recipe-form {
+    width: 60%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Labels */
+.label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Input Fields */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Quantity Field */
+.quantity-field {
+    width: 150px;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Ingredient and Step Containers */
+.ingredient-container, .steps-container {
+    margin-bottom: 1rem;
+}
+
+.ingredient-item, .step-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Remove Button */
+.remove-btn {
+    color: #f44336;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    color: #d32f2f;
+}
+
+/* Add Button */
+.add-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Submit and Back Buttons */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #388e3c;
+}
+
+.back-link {
+    text-decoration: none;
+    background-color: #4caf50;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.back-link:hover {
+    background-color: #388e3c;
+}
+
+/* Step Numbers */
+.step-number {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
